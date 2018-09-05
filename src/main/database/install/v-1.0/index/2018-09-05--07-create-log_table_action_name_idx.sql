@@ -1,0 +1,1 @@
+create index log_table_action_name_idx on log_table(action_name) local;

@@ -1,0 +1,1 @@
+create or replace public synonym tech_log_table_seq for SEQ_LOG_TABLE;

@@ -1,0 +1,1 @@
+create or replace public synonym tech_log_instances for log_instances;

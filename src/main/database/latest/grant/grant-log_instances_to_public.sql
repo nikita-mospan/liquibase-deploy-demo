@@ -1,0 +1,1 @@
+grant select on log_instances to public;

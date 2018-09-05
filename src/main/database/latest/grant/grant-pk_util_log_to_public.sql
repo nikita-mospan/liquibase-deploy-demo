@@ -1,0 +1,1 @@
+grant execute on pk_util_log to public;

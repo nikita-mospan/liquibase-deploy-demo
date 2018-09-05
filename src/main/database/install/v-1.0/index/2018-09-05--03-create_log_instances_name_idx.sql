@@ -1,0 +1,1 @@
+create index log_instances_name_idx on log_instances(log_instance_name);

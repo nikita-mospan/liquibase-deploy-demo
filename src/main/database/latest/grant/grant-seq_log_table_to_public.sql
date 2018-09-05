@@ -1,0 +1,1 @@
+grant select on  SEQ_LOG_TABLE to public;

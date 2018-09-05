@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="2018-09-05--01-create-seq_log_table.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/sequence/2018-09-05--01-create-seq_log_table.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--02-create-log_instances.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/table/2018-09-05--02-create-log_instances.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--03-create_log_instances_name_idx.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/index/2018-09-05--03-create_log_instances_name_idx.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--04-create-log_table.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/table/2018-09-05--04-create-log_table.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--05-create-log_table_log_id_idx.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/index/2018-09-05--05-create-log_table_log_id_idx.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--06-create-log_table_parent_id_idx.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/index/2018-09-05--06-create-log_table_parent_id_idx.sql" />
+    </changeSet>
+
+    <changeSet id="2018-09-05--07-create-log_table_action_name_idx.sql" author="nikita.mospan">
+        <sqlFile path="src/main/database/install/v-1.0/index/2018-09-05--07-create-log_table_action_name_idx.sql" />
+    </changeSet>
+
+</databaseChangeLog>
