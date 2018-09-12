@@ -7,6 +7,14 @@
     <groupId>mospan</groupId>
     <artifactId>liquibase-deploy-demo</artifactId>
     <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dbUrl>jdbc:oracle:thin:@ora12c:1521:orcl</dbUrl>
+        <dbUser>tech_user</dbUser>
+        <dbPass>1</dbPass>
+    </properties>
 
     <build>
         <extensions>
@@ -42,11 +50,51 @@
                             <driver>oracle.jdbc.driver.OracleDriver</driver>
                             <url>jdbc:oracle:thin:@ora12c:1521/orcl</url>
                             <username>tech_user</username>
-                            <!--suppress MavenModelInspection -->
-                            <password>${settings.servers.ora12c_tech_user.password}</password>
+                            <password>1</password>
                             <changeLogFile>src/main/database/changelog/master.xml</changeLogFile>
                             <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                             <verbose>false</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.utplsql</groupId>
+                <artifactId>utplsql-maven-plugin</artifactId>
+                <version>3.1.0-SNAPSHOT</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>ojdbc7</artifactId>
+                        <version>12.1.0.2</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <ignoreFailure>false</ignoreFailure>
+
+                            <reporters>
+                                <reporter>
+                                    <name>UT_TEAMCITY_REPORTER</name>
+                                </reporter>
+                            </reporters>
+
+                            <tests>
+                                <test>
+                                    <directory>src/test/database/package</directory>
+                                    <includes>
+                                        <include>**/*pks</include>
+                                        <include>**/*pkb</include>
+                                    </includes>
+                                </test>
+                            </tests>
                         </configuration>
                     </execution>
                 </executions>
