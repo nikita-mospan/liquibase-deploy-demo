@@ -28,7 +28,7 @@
         <utplsql.url>${db.user.test}/${db.pw.test}@//${db.host}/${db.service}</utplsql.url>
 
         <!-- Output directory -->
-        <utplsql.out>${project.build.directory}/utplsql/</utplsql.out>
+        <!--<utplsql.out>${project.build.directory}/utplsql/</utplsql.out>-->
     </properties>
 
     <build>
@@ -79,21 +79,6 @@
                 <version>1.6.0</version>
                 <executions>
                     <execution>
-                        <id>utplsql-mkdir</id>  <!-- create the output directory -->
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <longModulepath>false</longModulepath>
-                            <executable>mkdir</executable>
-                            <arguments>
-                                <argument>-p</argument>
-                                <argument>${utplsql.out}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>utplsql-run</id>   <!--  run utPLSQL -->
                         <phase>test</phase>
                         <goals>
@@ -105,8 +90,7 @@
                             <arguments>
                                 <argument>run</argument>
                                 <argument>${utplsql.url}</argument>
-                                <argument>-f=ut_documentation_reporter</argument>
-                                <argument>-s</argument>
+                                <argument>-f=ut_teamcity_reporter</argument>
                             </arguments>
                         </configuration>
                     </execution>
