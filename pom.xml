@@ -14,6 +14,21 @@
         <dbUrl>jdbc:oracle:thin:@ora12c:1521:orcl</dbUrl>
         <dbUser>tech_user</dbUser>
         <dbPass>1</dbPass>
+        <!-- Datbase -->
+        <db.host>ora12c</db.host>
+        <db.port>1521</db.port>
+        <db.service>orcl</db.service>
+        <db.user.test>tech_user</db.user.test>
+        <db.pw.test>1</db.pw.test>
+
+        <!-- Path to utplsql  (see https://github.com/utPLSQL/utPLSQL-cli) -->
+        <utplsql.cli>${basedir}/src/main/resources/utPLSQL-cli/bin/utplsql.bat</utplsql.cli>
+
+        <!-- ConnectionURL -->
+        <utplsql.url>${db.user.test}/${db.pw.test}@//${db.host}/${db.service}</utplsql.url>
+
+        <!-- Output directory -->
+        <utplsql.out>${project.build.directory}/utplsql/</utplsql.out>
     </properties>
 
     <build>
@@ -59,42 +74,40 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.utplsql</groupId>
-                <artifactId>utplsql-maven-plugin</artifactId>
-                <version>3.1.0-SNAPSHOT</version>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>com.oracle</groupId>
-                        <artifactId>ojdbc7</artifactId>
-                        <version>12.1.0.2</version>
-                    </dependency>
-                </dependencies>
-
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
-                        <phase>test</phase>
+                        <id>utplsql-mkdir</id>  <!-- create the output directory -->
+                        <phase>process-test-classes</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <ignoreFailure>false</ignoreFailure>
-
-                            <reporters>
-                                <reporter>
-                                    <name>UT_TEAMCITY_REPORTER</name>
-                                </reporter>
-                            </reporters>
-
-                            <tests>
-                                <test>
-                                    <directory>src/test/database/package</directory>
-                                    <includes>
-                                        <include>**/*pks</include>
-                                        <include>**/*pkb</include>
-                                    </includes>
-                                </test>
-                            </tests>
+                            <longModulepath>false</longModulepath>
+                            <executable>mkdir</executable>
+                            <arguments>
+                                <argument>-p</argument>
+                                <argument>${utplsql.out}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>utplsql-run</id>   <!--  run utPLSQL -->
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${utplsql.cli}</executable>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>${utplsql.url}</argument>
+                                <argument>-f=ut_documentation_reporter</argument>
+                                <argument>-s</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
