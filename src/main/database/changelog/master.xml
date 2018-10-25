@@ -6,5 +6,6 @@
 
     <include file="src/main/database/changelog/install/changelog-1.0.xml" />
     <include file="src/main/database/changelog/latest/changelog.xml" />
+    <include file="src/test/database/changelog/latest/changelog.xml" />
 
 </databaseChangeLog>
