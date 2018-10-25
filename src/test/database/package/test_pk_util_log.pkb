@@ -12,7 +12,7 @@ CREATE OR REPLACE PACKAGE BODY test_pk_util_log AS
         
         select count(*) into v_actual from tech_log_instances t where t.start_log_id = g_log_entry_creation_log_id;
         
-        ut.expect(v_actual).to_equal(2);
+        ut.expect(v_actual).to_equal(1);
     end; 
     
     procedure after_log_entry_creation is
