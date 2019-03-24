@@ -8,35 +8,20 @@ databaseChangeLog:
 
   # packages
   - changeSet:
-      id: pk_util_log.pks
+      id: deploy_packages
       author: mospan.nn@phystech.edu
       runOnChange: true
       changes:
         - sqlFile: {path: packages/pk_util_log.pks, stripComments: false, endDelimiter: '/'}
-        - sql:
-            sql: "grant execute on pk_util_log to public"
-        - sql:
-            sql: "create or replace public synonym pk_util_log for pk_util_log"
-
-  - changeSet:
-      id: pk_util_log.pkb
-      author: mospan.nn@phystech.edu
-      runOnChange: true
-      changes:
         - sqlFile: {path: packages/pk_util_log.pkb, stripComments: false, endDelimiter: '/'}
-
+        - sql: grant execute on pk_util_log to public
+        - sql: create or replace public synonym pk_util_log for pk_util_log
 
   # unit test objects
   - changeSet:
-      id: test_pk_util_log.pks
+      id: deploy_unit_tests
       author: mospan.nn@phystech.edu
       runOnChange: true
       changes:
         - sqlFile: {path: unittest/test_pk_util_log.pks, stripComments: false, endDelimiter: '/'}
-
-  - changeSet:
-      id: test_pk_util_log.pkb
-      author: mospan.nn@phystech.edu
-      runOnChange: true
-      changes:
         - sqlFile: {path: unittest/test_pk_util_log.pkb, stripComments: false, endDelimiter: '/'}
