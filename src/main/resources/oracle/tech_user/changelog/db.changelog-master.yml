@@ -1,0 +1,26 @@
+databaseChangeLog:
+  # tables
+  - include: {file: tables/log_instances.yml}
+  - include: {file: tables/log_table.yml}
+
+  # sequences
+  - include: {file: sequences/seq_log_table.sql}
+
+  # packages
+  - changeSet:
+      id: pk_util_log.pks
+      author: mospan.nn@phystech.edu
+      runOnChange: true
+      changes:
+        - sqlFile: {path: packages/pk_util_log.pks, stripComments: false, endDelimiter: '/'}
+        - sql:
+            sql: "grant execute on pk_util_log to public"
+        - sql:
+            sql: "create or replace public synonym pk_util_log for pk_util_log"
+
+  - changeSet:
+      id: pk_util_log.pkb
+      author: mospan.nn@phystech.edu
+      runOnChange: true
+      changes:
+        - sqlFile: {path: packages/pk_util_log.pkb, stripComments: false, endDelimiter: '/'}

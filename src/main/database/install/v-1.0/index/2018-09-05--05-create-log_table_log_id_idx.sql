@@ -1,1 +1,0 @@
-create index log_table_log_id_idx on log_table(log_id) local;

@@ -59,3 +59,4 @@ CREATE OR REPLACE PACKAGE pk_util_log AUTHID DEFINER AS
                                     , p_raise_if_ddl_failed_in IN boolean default true);
 
 END pk_util_log;
+/

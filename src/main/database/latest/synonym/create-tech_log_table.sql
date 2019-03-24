@@ -1,1 +1,0 @@
-create or replace public synonym tech_log_table for log_table;

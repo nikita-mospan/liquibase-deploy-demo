@@ -290,3 +290,4 @@ CREATE OR REPLACE PACKAGE BODY pk_util_log AS
     end log_and_execute_ddl;
 
 END pk_util_log;
+/
