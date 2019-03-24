@@ -25,3 +25,4 @@ CREATE OR REPLACE PACKAGE BODY test_pk_util_log AS
     
     
 END test_pk_util_log;
+/

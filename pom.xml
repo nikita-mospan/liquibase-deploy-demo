@@ -11,24 +11,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dbUrl>jdbc:oracle:thin:@ora12c:1521:orcl</dbUrl>
-        <dbUser>tech_user</dbUser>
-        <dbPass>1</dbPass>
-        <!-- Database -->
-        <db.host>ora12c</db.host>
-        <db.port>1521</db.port>
-        <db.service>orcl</db.service>
-        <db.user.test>tech_user</db.user.test>
-        <db.pw.test>1</db.pw.test>
 
         <!-- Path to utplsql  (see https://github.com/utPLSQL/utPLSQL-cli) -->
         <utplsql.cli>${basedir}/src/main/resources/utPLSQL-cli/bin/utplsql.bat</utplsql.cli>
 
-        <!-- ConnectionURL -->
-        <utplsql.url>${db.user.test}/${db.pw.test}@//${db.host}/${db.service}</utplsql.url>
-
-        <!-- Output directory -->
-        <!--<utplsql.out>${project.build.directory}/utplsql/</utplsql.out>-->
+        <!--suppress UnresolvedMavenProperty -->
+        <utplsql.url>${env.LIQUIBASE_USER}/${env.LIQUIBASE_PASSWORD}@//${env.DEPLOY_DB_HOST}/${env.DEPLOY_DB_SERVICE}</utplsql.url>
     </properties>
 
     <build>

@@ -7,3 +7,4 @@ create or replace package test_pk_util_log as
     
     procedure after_log_entry_creation;
 end;
+/
