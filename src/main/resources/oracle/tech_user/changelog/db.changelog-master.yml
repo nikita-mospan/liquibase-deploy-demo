@@ -10,6 +10,8 @@ databaseChangeLog:
   - include: {file: config_tables/parallel_tasks.sql}
   - include: {file: config_tables/parallel_task_items.sql}
 
+  # views
+  - include: {file: views/parallel_tasks_stats_v.sql}
 
   # config_tables dml
   - include: {file: config_tables/config_tables_dml.sql}
