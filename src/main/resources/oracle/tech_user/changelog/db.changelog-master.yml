@@ -1,10 +1,26 @@
 databaseChangeLog:
-  # tables
-  - include: {file: tables/log_instances.yml}
-  - include: {file: tables/log_table.yml}
+  # config_tables
+  - include: {file: config_tables/log_instances.sql}
+  - include: {file: config_tables/log_table.sql}
+  - include: {file: config_tables/master_tables.sql}
+  - include: {file: config_tables/master_tables_attributes.sql}
+  - include: {file: config_tables/master_tech_attributes.sql}
+  - include: {file: config_tables/mappings2etl_stage.sql}
+  - include: {file: config_tables/sources.sql}
+  - include: {file: config_tables/parallel_tasks.sql}
+  - include: {file: config_tables/parallel_task_items.sql}
+
+
+  # config_tables dml
+  - include: {file: config_tables/config_tables_dml.sql}
 
   # sequences
   - include: {file: sequences/seq_log_table.sql}
+  - include: {file: sequences/seq_parallel_item_id.sql}
+
+  # custom types
+  - include: {file: types/t_number_list.sql}
+  - include: {file: types/t_string_list.sql}
 
   # packages
   - changeSet:
@@ -12,9 +28,24 @@ databaseChangeLog:
       author: mospan.nn@phystech.edu
       runOnChange: true
       changes:
+        # package specifications
+        - sqlFile: {path: packages/pk_constants.pks, stripComments: false, endDelimiter: '/'}
         - sqlFile: {path: packages/pk_util_log.pks, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_deploy.pks, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_etl.pks, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_util_lock.pks, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_validate.pks, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_util_parallel_execute.pks, stripComments: false, endDelimiter: '/'}
+        # package bodies
         - sqlFile: {path: packages/pk_util_log.pkb, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_deploy.pkb, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_etl.pkb, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_util_lock.pkb, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_validate.pkb, stripComments: false, endDelimiter: '/'}
+        - sqlFile: {path: packages/pk_util_parallel_execute.pkb, stripComments: false, endDelimiter: '/'}
+        # grants
         - sql: grant execute on pk_util_log to public
+        # synonyms
         - sql: create or replace public synonym pk_util_log for pk_util_log
 
   # unit test objects
