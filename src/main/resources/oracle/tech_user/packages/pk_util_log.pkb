@@ -5,7 +5,7 @@ CREATE OR REPLACE PACKAGE BODY pk_util_log AS
     --2.    Parent log_id to have connection with the parent log entry.
     --3.	Start log_id which is a root of the logging hierarchy.
 
-	  g_start_log_id tech_log_instances.start_log_id%type := NULL;
+    g_start_log_id tech_log_instances.start_log_id%type := NULL;
     g_current_log_id tech_log_table.log_id%type := NULL;
     g_parent_log_id tech_log_table.parent_log_id%type := NULL;
     g_is_first_log_entry boolean := true;
@@ -200,7 +200,7 @@ CREATE OR REPLACE PACKAGE BODY pk_util_log AS
     PROCEDURE log_record(p_action_name_in IN tech_log_table.action_name%TYPE
                         ,p_comments_in  IN tech_log_table.comments%TYPE DEFAULT NULL
                         ,p_clob_text_in IN tech_log_table.clob_text%TYPE DEFAULT NULL
-                        ,p_status_in    IN tech_log_table.status%TYPE
+                        ,p_status_in    IN tech_log_table.status%TYPE DEFAULT g_status_completed
                         ,p_row_count_in IN tech_log_table.row_count%TYPE DEFAULT NULL) IS
     BEGIN
         open_next_level(p_action_name_in => p_action_name_in

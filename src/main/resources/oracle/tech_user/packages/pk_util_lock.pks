@@ -12,7 +12,7 @@ CREATE OR REPLACE PACKAGE pk_util_lock AUTHID CURRENT_USER AS
     pragma exception_init(e_lock_handle_is_not_owned, -20004);
     pragma exception_init(e_timeout, -20005);
 
-	procedure acquire(p_lock_name_in varchar2
+	  procedure acquire(p_lock_name_in varchar2
                     , p_timeout_sec_in pls_integer default 0);
     
     procedure release(p_lock_name_in varchar2);

@@ -20,8 +20,7 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         insert into tech_parallel_tasks (task_name, comments, status, parallel_level, timeout_seconds, task_prefix)
             values(v_task_name, p_comments_in, g_status_new, p_parallel_level_in, p_timeout_seconds_in, p_task_prefix_in);
         
-        pk_util_log.log_record(p_action_name_in => 'TASK_NAME: ' || v_task_name
-                            , p_status_in => pk_util_log.g_status_completed);
+        pk_util_log.log_record(p_action_name_in => 'TASK_NAME: ' || v_task_name);
         
         dbms_parallel_execute.create_task(task_name => v_task_name,
                                     comment => p_comments_in);
@@ -30,10 +29,10 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         commit;
         return v_task_name;
     exception
-    	when others then
+        when others then
             rollback;
-    		pk_util_log.close_level_fail;
-    		raise;
+            pk_util_log.close_level_fail;
+            raise;
     end create_task;
     
     ----
@@ -58,13 +57,13 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         commit;
         return v_item_id;
     exception
-    	when others then
+        when others then
             rollback;
-    		pk_util_log.close_level_fail;
-    		raise;       
+            pk_util_log.close_level_fail;
+            raise;
     end add_item_to_task;
    
-	-----
+    -----
     
     procedure execute_task (p_task_name_in in tech_parallel_tasks.task_name%type) is
         v_chunk_sql varchar2(32767);
@@ -86,11 +85,11 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
             where i.task_name = p_task_name_in;
             commit;
         exception
-        	when others then
+            when others then
                 rollback;
-        		pk_util_log.log_record(p_action_name_in => 'execute_task-->set_chunk_for_items failed'
+                pk_util_log.log_record(p_action_name_in => 'execute_task-->set_chunk_for_items failed'
                                     , p_status_in => g_status_failed);
-        		raise;
+                raise;
         end set_chunk_for_items;
         
         --
@@ -102,7 +101,7 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
                                                                                 and up.START_ID = i.item_id)
                                         when g_exec_chunk_success_status then  g_status_completed
                                         else g_status_failed end
-                where i.task_name = p_task_name_in;
+            where i.task_name = p_task_name_in;
                 
             update tech_parallel_tasks t 
                 set t.status = p_status_in 
@@ -112,11 +111,11 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
             commit;            
             
         exception
-        	when others then
+            when others then
                 rollback;
-        		pk_util_log.log_record(p_action_name_in => 'execute_task-->log_execution_status failed'
+                pk_util_log.log_record(p_action_name_in => 'execute_task-->log_execution_status failed'
                                     , p_status_in => g_status_failed);
-        		raise;
+                raise;
         end log_execution_status;
         --
         procedure log_task_start_of_execution is
@@ -128,9 +127,9 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
             where t.task_name = p_task_name_in;
             commit;
         exception
-        	when others then
-        		rollback;
-        		raise;
+            when others then
+                rollback;
+                raise;
         end;
     ---------------------------------------
     begin
@@ -145,16 +144,13 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         pk_util_log.log_record(p_action_name_in => 'Parameters: '
                             , p_comments_in => 'parallel_level: ' || to_char(v_parallel_level) || g_new_line ||
                                                 'timeout_seconds: ' || to_char(v_timeout_seconds) || g_new_line ||
-                                                'task_prefix ' || v_task_prefix
-                            , p_status_in => pk_util_log.g_status_completed);
+                                                'task_prefix ' || v_task_prefix);
         
         v_chunk_sql := replace(q'[select i.item_id, i.item_id from tech_parallel_task_items i where i.task_name = '#task_name#']'
                             , '#task_name#'
                             , p_task_name_in); 
         
-        pk_util_log.log_record(p_action_name_in => 'chunk SQL'
-                            , p_clob_text_in => v_chunk_sql
-                            , p_status_in => pk_util_log.g_status_completed);
+        pk_util_log.log_record(p_action_name_in => 'chunk SQL', p_clob_text_in => v_chunk_sql);
         
         dbms_parallel_execute.create_chunks_by_SQL(task_name => p_task_name_in, sql_stmt => v_chunk_sql, by_rowid => false);
         
@@ -193,10 +189,10 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
                             
                             pk_util_log.close_level_success;
                         exception
-    	                    when others then
+                            when others then
                                 pk_util_log.add_clob_text(p_clob_text_in => v_plsql_block);
-    		                    pk_util_log.close_level_fail;
-    		                    raise;
+                                pk_util_log.close_level_fail;
+                                raise;
                         end;]';       
         
         v_cur_log_id := pk_util_log.get_current_log_id;       
@@ -215,8 +211,7 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         v_plsql_task_run_str := replace(v_plsql_task_run_str, '#v_parallel_level#', to_char(v_parallel_level));
         
         pk_util_log.log_record(p_action_name_in => 'plsql_task'
-                            , p_clob_text_in => v_plsql_task_run_str
-                            , p_status_in => pk_util_log.g_status_completed);
+                            , p_clob_text_in => v_plsql_task_run_str);
         
         v_execution_start := sysdate;
         log_task_start_of_execution;
@@ -258,18 +253,16 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
                             
                             pk_util_log.log_record(p_action_name_in => 'Stopping job'
                                                 , p_comments_in => 'Job ' || v_job_to_stop_timeout_items || ' started to stop job ' ||
-                                                                               i.job_name || ' for item_id: ' || to_char(i.item_id)
-                                                , p_status_in => pk_util_log.g_status_completed);
+                                                                               i.job_name || ' for item_id: ' || to_char(i.item_id));
                             
                            
                         exception
-                        	when others then
-                        		pk_util_log.log_record(p_action_name_in => 'Stopping job'
+                            when others then
+                                pk_util_log.log_record(p_action_name_in => 'Stopping job'
                                                     , p_comments_in => 'Job ' || v_job_to_stop_timeout_items || ' failed(!!!) to stop job ' ||
                                                                                i.job_name || ' for item_id: ' || to_char(i.item_id)
                                                         , p_clob_text_in => 'v_stop_item_job_action: ' || g_new_line ||
-                                                                            v_stop_item_job_action
-                                                        , p_status_in => pk_util_log.g_status_failed);
+                                                                            v_stop_item_job_action);
                         end;
                     end loop;
                     ------
@@ -296,9 +289,9 @@ CREATE OR REPLACE PACKAGE BODY pk_util_parallel_execute AS
         
         pk_util_log.close_level_success;
     exception
-    	when others then
-    		pk_util_log.close_level_fail;
-    		raise;        
+        when others then
+            pk_util_log.close_level_fail;
+            raise;
     end execute_task;    
        
 END pk_util_parallel_execute;

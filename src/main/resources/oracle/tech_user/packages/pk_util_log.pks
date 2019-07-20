@@ -34,7 +34,7 @@ CREATE OR REPLACE PACKAGE pk_util_log AUTHID DEFINER AS
     PROCEDURE log_record(p_action_name_in IN tech_log_table.action_name%TYPE
                         ,p_comments_in  IN tech_log_table.comments%TYPE DEFAULT NULL
                         ,p_clob_text_in IN tech_log_table.clob_text%TYPE DEFAULT NULL
-                        ,p_status_in    IN tech_log_table.status%TYPE
+                        ,p_status_in    IN tech_log_table.status%TYPE DEFAULT g_status_completed
                         ,p_row_count_in IN tech_log_table.row_count%TYPE DEFAULT NULL);
 
     --Get current log_id for the session
